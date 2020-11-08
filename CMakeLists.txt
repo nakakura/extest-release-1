@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.0)
-# add_custom_targetでコマンドを叩くので環境変数として定義しておく
 set (ENV{PROJECT_NAME} extest)
 project($ENV{PROJECT_NAME})
 
@@ -23,15 +22,14 @@ add_custom_target($ENV{PROJECT_NAME}
         COMMAND echo "==========CMAKE_SOURCE_DIR=========="
         COMMAND echo ${CMAKE_SOURCE_DIR}
         COMMAND echo "==========pwd=========="
-        COMMAND pw
+        COMMAND pwd
         COMMAND echo "==========ls -al =========="
         COMMAND ls -al
-        COMMAND echo "==========source $HOME/.cargo/env=========="
-        COMMAND $HOME/.cargo/env
-        COMMAND cd ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME} && cargo clean && cargo test --no-run && cargo build --release
-        COMMAND find ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}/target/debug/deps -perm /u=x,g=x,o=x -type f | xargs -I% mv % ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}_test
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}/target/release/$ENV{PROJECT_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}
-        COMMAND rm ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}/target/release/$ENV{PROJECT_NAME}
+        COMMAND cargo
+        COMMAND cd ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release && cargo clean && cargo test --no-run && cargo build --release
+        COMMAND find ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/debug/deps -perm /u=x,g=x,o=x -type f | xargs -I% mv % ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}_test
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release/$ENV{PROJECT_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}
+        COMMAND rm ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release/$ENV{PROJECT_NAME}
         COMMENT "Building my Rust library"
 )
 
@@ -40,5 +38,4 @@ enable_testing()
 add_test(NAME $ENV{PROJECT_NAME}_TEST
         COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}_test)
 
-# セットした環境変数をクリアしておく
 unset (ENV{PROJECT_NAME})
