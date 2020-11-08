@@ -19,8 +19,15 @@ catkin_package(
 
 add_custom_target($ENV{PROJECT_NAME}
         ALL
-        COMMAND echo ${CMAKE_SOURCE_DIR}
         COMMAND if [ hash rustc 2>/dev/null ] \; then echo "rustc exists"\; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y\; fi\;
+        COMMAND echo "==========CMAKE_SOURCE_DIR=========="
+        COMMAND echo ${CMAKE_SOURCE_DIR}
+        COMMAND echo "==========pwd=========="
+        COMMAND pw
+        COMMAND echo "==========ls -al =========="
+        COMMAND ls -al
+        COMMAND echo "==========source $HOME/.cargo/env=========="
+        COMMAND $HOME/.cargo/env
         COMMAND cd ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME} && cargo clean && cargo test --no-run && cargo build --release
         COMMAND find ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}/target/debug/deps -perm /u=x,g=x,o=x -type f | xargs -I% mv % ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}_test
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}/target/release/$ENV{PROJECT_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}
