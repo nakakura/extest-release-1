@@ -33,6 +33,7 @@ add_custom_target($ENV{PROJECT_NAME}
         COMMAND ls -al ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release
         COMMAND echo "==========${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release/$ENV{PROJECT_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}=========="
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release/$ENV{PROJECT_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$ENV{PROJECT_NAME}
+        COMMAND rm ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/release/$ENV{PROJECT_NAME}
         COMMAND pwd
         COMMAND find ${CMAKE_SOURCE_DIR}/$ENV{PROJECT_NAME}-release/target/debug/deps -perm /u=x,g=x,o=x -type f | grep deps/extest | xargs -I% cp % ./test
         COMMAND echo "=====hoge====="
