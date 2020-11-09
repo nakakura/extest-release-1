@@ -2,7 +2,7 @@
 <package format="2">
   <name>extest</name>
   <version>0.0.1</version>
-  <description>control Telubee Head</description>
+  <description>Hello World with rosrust</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
